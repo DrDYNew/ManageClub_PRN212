@@ -1,0 +1,109 @@
+CREATE DATABASE ManageClub;
+GO
+USE ManageClub
+GO
+CREATE TABLE Roles (
+    RoleID INT PRIMARY KEY IDENTITY(1,1),
+    RoleName VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE Users (
+    UserID INT PRIMARY KEY IDENTITY(1,1),
+    FullName NVARCHAR(100) NOT NULL, 
+    Email VARCHAR(100) NOT NULL UNIQUE,
+    Password VARCHAR(255) NOT NULL,
+    RoleID INT NOT NULL,
+    DateOfBirth DATE NULL,
+    PhoneNumber VARCHAR(15) NULL,
+    Address NVARCHAR(MAX) NULL, 
+    AvatarURL VARCHAR(255) NULL,
+    DateJoined DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Status VARCHAR(10) NOT NULL,
+    FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
+);
+
+
+CREATE TABLE Clubs (
+    ClubID INT PRIMARY KEY IDENTITY(1,1),
+    ClubName VARCHAR(100) NOT NULL,
+    Description TEXT NULL,
+    EstablishedDate DATE NULL,
+    PresidentID INT NULL,
+    FOREIGN KEY (PresidentID) REFERENCES Users(UserID)
+);
+
+CREATE TABLE ClubMembers (
+    MembershipID INT PRIMARY KEY IDENTITY(1,1),
+    ClubID INT NOT NULL,
+    UserID INT NOT NULL,
+    JoinDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Position VARCHAR(20),
+    Status VARCHAR(10),
+    FOREIGN KEY (ClubID) REFERENCES Clubs(ClubID),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+CREATE TABLE Events (
+    EventID INT PRIMARY KEY IDENTITY(1,1),
+    EventName VARCHAR(100) NOT NULL,
+    Description TEXT NULL,
+    EventDate DATETIME NOT NULL,
+    Location VARCHAR(200) NOT NULL,
+    OrganizerID INT NOT NULL,
+    ClubID INT,
+    MaxParticipants INT NULL,
+    FOREIGN KEY (OrganizerID) REFERENCES Users(UserID),
+    FOREIGN KEY (ClubID) REFERENCES Clubs(ClubID)
+);
+
+CREATE TABLE EventParticipants (
+    EventParticipantID INT PRIMARY KEY IDENTITY(1,1),
+    EventID INT NOT NULL,
+    UserID INT NOT NULL,
+    RegistrationDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Status VARCHAR(15) NOT NULL,
+    FOREIGN KEY (EventID) REFERENCES Events(EventID),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+CREATE TABLE Attendance (
+    AttendanceID INT PRIMARY KEY IDENTITY(1,1),
+    EventID INT NOT NULL,
+    UserID INT NOT NULL,
+    CheckInTime DATETIME NULL,
+    CheckOutTime DATETIME NULL,
+    FOREIGN KEY (EventID) REFERENCES Events(EventID),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+CREATE TABLE EventFeedback (
+    FeedbackID INT PRIMARY KEY IDENTITY(1,1),
+    EventID INT NOT NULL,
+    UserID INT NOT NULL,
+    Rating INT CHECK (Rating BETWEEN 1 AND 5),
+    Comments TEXT NULL,
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (EventID) REFERENCES Events(EventID),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+CREATE TABLE ClubFinances (
+    FinanceID INT PRIMARY KEY IDENTITY(1,1),
+    ClubID INT NOT NULL,
+    TransactionType VARCHAR(10),
+    Amount DECIMAL(10,2) NOT NULL,
+    Description TEXT NULL,
+    TransactionDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ClubID) REFERENCES Clubs(ClubID)
+);
+
+CREATE TABLE Reports (
+    ReportID INT PRIMARY KEY IDENTITY(1,1),
+    ClubID INT NOT NULL,
+    Semester VARCHAR(20) NOT NULL,
+    MemberChanges TEXT NULL,
+    EventSummary TEXT NULL,
+    ParticipationStats TEXT NULL,
+    CreatedDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ClubID) REFERENCES Clubs(ClubID)
+);

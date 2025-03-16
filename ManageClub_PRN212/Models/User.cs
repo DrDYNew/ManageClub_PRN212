@@ -15,7 +15,7 @@ public partial class User
 
     public int RoleId { get; set; }
 
-    public DateOnly? DateOfBirth { get; set; }
+    public DateTime? DateOfBirth { get; set; }
 
     public string? PhoneNumber { get; set; }
 
@@ -40,4 +40,9 @@ public partial class User
     public virtual ICollection<Event> Events { get; set; } = new List<Event>();
 
     public virtual Role Role { get; set; } = null!;
+
+    public static class SessionDataUser
+    {
+        public static List<User> users { get; set; } = new List<User>();
+    }
 }
