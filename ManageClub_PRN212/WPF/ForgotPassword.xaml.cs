@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using ManageClub_PRN212.Models;
 using static ManageClub_PRN212.Models.Mail;
 using Microsoft.Extensions.Options;
+using ManageClub_PRN212.DAO;
 
 namespace ManageClub_PRN212.WPF
 {
@@ -33,22 +34,21 @@ namespace ManageClub_PRN212.WPF
         {
             if (txtEmail.Text == string.Empty)
             {
-                MessageBox.Show("Vui lòng không bỏ trống email", "Input Email");
+                MessageBox.Show("Please do not leave the email empty.", "Input Email", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            User user = _context.Users.FirstOrDefault(x => x.Email == txtEmail.Text);
+            User user = UserDAO.GetUserByEmail(txtEmail.Text);
 
             if (user == null)
             {
-                MessageBox.Show("Email không tồn tại trong hệ thống", "Input Email");
+                MessageBox.Show("The email does not exist in the system.", "Input Email", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             string newpassword = Mail.GenerateRandomPassword(6);
 
-            user.Password = newpassword;
-            _context.SaveChanges();
+            UserDAO.UpdateForgotPassword(user, newpassword);
 
             var mailSettings = new MailSettings
             {
@@ -59,8 +59,8 @@ namespace ManageClub_PRN212.WPF
                 Port = 587
             };
             Mail.SendMailService sendMailService = new Mail.SendMailService(Options.Create(mailSettings));
-            sendMailService.SendEmailAsync(user.Email, "New PasswordReset", $"Mật khẩu mới của bạn là: <b>{newpassword}</b>");
-            MessageBox.Show("Mật khẩu mới đã được gửi qua email!", "Thông báo");
+            sendMailService.SendEmailAsync(user.Email, "New PasswordReset", $"Your new password is: <b>{newpassword}</b>");
+            MessageBox.Show("The new password has been sent to your email!", "Notification");
         }
 
         private void tbRegister_Click(object sender, RoutedEventArgs e)
@@ -74,6 +74,11 @@ namespace ManageClub_PRN212.WPF
         {
             Login loginWindown = new Login();
             loginWindown.Show();
+            this.Close();
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
             this.Close();
         }
     }

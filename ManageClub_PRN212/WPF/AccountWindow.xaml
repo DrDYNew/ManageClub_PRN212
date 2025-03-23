@@ -34,11 +34,8 @@
                         <Label HorizontalAlignment="Left" Content="Role:" Margin="5" Width="300"/>
                         <ComboBox Name="cbRoles" Width="200" Height="30" 
                           DisplayMemberPath="RoleName" SelectedValuePath="RoleId"/>
-
                     </StackPanel>
-
-
-
+                    
                     <StackPanel Grid.Row="1" Orientation="Vertical">
                         <StackPanel Grid.Row="1" Orientation="Horizontal"  
                     HorizontalAlignment="Left">

@@ -45,4 +45,6 @@ public partial class User
     {
         public static List<User> users { get; set; } = new List<User>();
     }
+
+    public string UserIdWithName { get => $"{UserId} - {FullName}"; }
 }

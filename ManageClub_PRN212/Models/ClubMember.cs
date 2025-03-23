@@ -13,9 +13,7 @@ public partial class ClubMember
 
     public DateTime? JoinDate { get; set; }
 
-    public string? Position { get; set; }
-
-    public string? Status { get; set; }
+    public string? MemberStatus { get; set; }
 
     public virtual Club Club { get; set; } = null!;
 

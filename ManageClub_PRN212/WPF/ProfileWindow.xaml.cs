@@ -53,7 +53,7 @@ namespace ManageClub_PRN212.WPF
                 txtDob.SelectedDate = user.DateOfBirth;
                 txtPhone.Text = user.PhoneNumber.ToString();
                 txtAddress.Text = user.Address;
-                txtAvatarURL.Text = user.AvatarUrl.ToString();
+                txtAvatarURL.Text = string.IsNullOrEmpty(user.AvatarUrl) ? "https://example.com/avatar4.jpg" : user.AvatarUrl;
                 if (user.RoleId == 2)
                 {
                     tbBack.Visibility = Visibility.Collapsed;

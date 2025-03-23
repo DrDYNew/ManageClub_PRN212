@@ -21,6 +21,8 @@ public partial class Event
 
     public int? MaxParticipants { get; set; }
 
+    public string? EventStatus { get; set; }
+
     public virtual ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
 
     public virtual Club? Club { get; set; }
