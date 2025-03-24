@@ -49,15 +49,10 @@ namespace ManageClub_PRN212.WPF
             if (user != null)
             {
                 txtName.Text = user.FullName;
-                txtEmail.Text = user.Email;
-                txtDob.SelectedDate = user.DateOfBirth;
-                txtPhone.Text = user.PhoneNumber.ToString();
-                txtAddress.Text = user.Address;
-                txtAvatarURL.Text = user.AvatarUrl.ToString();
-                if (user.RoleId == 2)
-                {
-                    tbBack.Visibility = Visibility.Collapsed;
-                }
+                    txtEmail.Text = user.Email;
+                dpDatePicker.SelectedDate = user.DateOfBirth;
+                    txtPhone.Text = user.PhoneNumber.ToString();
+                    txtAddress.Text = user.Address;
             }
             else
             {
@@ -71,10 +66,9 @@ namespace ManageClub_PRN212.WPF
             string email = txtEmail.Text.Trim();
             string phone = txtPhone.Text.Trim();
             string address = txtAddress.Text.Trim();
-            string avatarUrl = txtAvatarURL.Text.Trim();
-            DateTime? dob = txtDob.SelectedDate;
+            DateTime? dob = dpDatePicker.SelectedDate;
 
-            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phone) || string.IsNullOrEmpty(address) || string.IsNullOrEmpty(avatarUrl) || dob == null)
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phone) || string.IsNullOrEmpty(address) || dob == null)
             {
                 MessageBox.Show("Vui lòng điền đầy đủ thông tin!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -108,7 +102,6 @@ namespace ManageClub_PRN212.WPF
             user.Email = email;
             user.PhoneNumber = phone;
             user.Address = address;
-            user.AvatarUrl = avatarUrl;
             user.DateOfBirth = dob;
 
             _context.Users.Update(user);
@@ -117,18 +110,8 @@ namespace ManageClub_PRN212.WPF
             MessageBox.Show("Thay đổi thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void tbLogout_Click(object sender, RoutedEventArgs e)
-        {
-            SessionDataUser.users.Clear();
-            Login loginWindown = new Login();
-            loginWindown.Show();
-            this.Close();
-        }
-
         private void tbBack_Click(object sender, RoutedEventArgs e)
         {
-            AccountWindow AccountWindown = new AccountWindow();
-            AccountWindown.Show();
             this.Close();
         }
     }

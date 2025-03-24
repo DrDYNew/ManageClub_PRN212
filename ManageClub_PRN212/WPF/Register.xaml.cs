@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ManageClub_PRN212.DAO;
 using ManageClub_PRN212.Models;
 
 namespace ManageClub_PRN212.WPF
@@ -21,103 +23,187 @@ namespace ManageClub_PRN212.WPF
     /// </summary>
     public partial class Register : Window
     {
-        ManageClubContext _context;
+
         public Register()
         {
             InitializeComponent();
-            _context = new ManageClubContext();
+        }
+
+        private void btnRegister_Click(object sender, RoutedEventArgs e)
+        {
+            string fullName = txtFullName.Text.Trim();
+            string email = txtEmail.Text.Trim();
+            string password = txtPassword.Password;
+            string confirmPassword = txtConfirmPassword.Password;
+            DateTime? dateOfBirth = dpDateOfBirth.SelectedDate;
+            string phoneNumber = txtPhoneNumber.Text.Trim();
+            string address = txtAddress.Text.Trim();
+
+            if (!ValidateInputs(fullName, email, password, confirmPassword, dateOfBirth, phoneNumber, address))
+            {
+                return;
+            }
+
+            var newUser = new User
+            {
+                FullName = fullName,
+                Email = email,
+                Password = password,
+                DateOfBirth = dateOfBirth.Value,
+                PhoneNumber = phoneNumber,
+                Address = address,
+                DateJoined = DateTime.Now,
+                Status = "Active",
+                RoleId = 4
+            };
+
+            try
+            {
+                UserDAO.RegisterUser(newUser);
+                SendConfirmationEmail(email, fullName);
+                MessageBox.Show("Registration successful! A confirmation email has been sent.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                this.Close();
+                Login loginWindow = new Login();
+                loginWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Registration failed: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
 
-        private void btnSubmit_Click(object sender, RoutedEventArgs e)
+        private bool ValidateInputs(string fullName, string email, string password, string confirmPassword, DateTime? dateOfBirth, string phoneNumber, string address)
         {
-            string name = txtName.Text.Trim();
-            string email = txtEmail.Text.Trim();
-            string phone = txtPhone.Text.Trim();
-            string address = txtAddress.Text.Trim();
-            string avatarUrl = txtAvatarURL.Text.Trim();
-            string password = txtPassword.Password.Trim();
-            string rePassword = txtRepassword.Password.Trim();
-            DateTime? dob = txtDob.SelectedDate;
+            // Reset border colors
+            ResetFieldBorders();
 
+            bool isValid = true;
 
-
-
-            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phone) ||
-    string.IsNullOrEmpty(address) || string.IsNullOrEmpty(avatarUrl) || string.IsNullOrEmpty(password) ||
-    string.IsNullOrEmpty(rePassword) || dob == null)
+            // Validate FullName
+            if (string.IsNullOrEmpty(fullName) || fullName.Length < 2)
             {
-                MessageBox.Show("Vui lòng điền đầy đủ thông tin!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                txtFullName.BorderBrush = Brushes.Red;
+                MessageBox.Show("Full Name must be at least 2 characters long!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                isValid = false;
             }
 
-            if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            // Validate Email
+            if (string.IsNullOrEmpty(email) || !Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
             {
-                MessageBox.Show("Email không hợp lệ!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                txtEmail.BorderBrush = Brushes.Red;
+                MessageBox.Show("Please enter a valid email address!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                isValid = false;
             }
 
-            if (!Regex.IsMatch(phone, @"^\d{10,11}$"))
+            // Validate Password
+            if (string.IsNullOrEmpty(password) || password.Length < 6)
             {
-                MessageBox.Show("Số điện thoại không hợp lệ!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                txtPassword.BorderBrush = Brushes.Red;
+                MessageBox.Show("Password must be at least 6 characters long!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                isValid = false;
             }
 
-            if (!Regex.IsMatch(password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$"))
+            // Validate Confirm Password
+            if (password != confirmPassword)
             {
-                MessageBox.Show("Mật khẩu phải có ít nhất 6 ký tự, bao gồm chữ hoa, chữ thường và số!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                txtConfirmPassword.BorderBrush = Brushes.Red;
+                MessageBox.Show("Passwords do not match!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                isValid = false;
             }
 
-            if (password != rePassword)
+            // Validate Date of Birth
+            if (!dateOfBirth.HasValue || dateOfBirth.Value > DateTime.Now.AddYears(-10))
             {
-                MessageBox.Show("Mật khẩu nhập lại không khớp!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                dpDateOfBirth.BorderBrush = Brushes.Red;
+                MessageBox.Show("Please select a valid Date of Birth (at least 10 years ago)!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                isValid = false;
             }
 
-            User checkEmail = _context.Users.FirstOrDefault(x => x.Email == email);
-            if (checkEmail != null)
+            // Validate Phone Number
+            if (string.IsNullOrEmpty(phoneNumber) || !Regex.IsMatch(phoneNumber, @"^\d{10}$"))
             {
-                MessageBox.Show("Email đã có trong hệ thống! Vui lòng nhập Email khác", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                txtPhoneNumber.BorderBrush = Brushes.Red;
+                MessageBox.Show("Phone Number must be exactly 10 digits!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                isValid = false;
             }
 
-            User user = new User
+            // Validate Address (optional, nhưng nếu nhập thì phải có nội dung hợp lệ)
+            if (!string.IsNullOrEmpty(address) && address.Length < 5)
             {
-                FullName = name,
-                Email = email,
-                RoleId = 2,
-                PhoneNumber = phone,
-                Address = address,
-                AvatarUrl = avatarUrl,
-                Password = password,
-                DateOfBirth = dob,
-                DateJoined = DateTime.Now,
-                Status = "Active"
+                txtAddress.BorderBrush = Brushes.Red;
+                MessageBox.Show("Address must be at least 5 characters long if provided!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        private void ResetFieldBorders()
+        {
+            txtFullName.BorderBrush = Brushes.Gray;
+            txtEmail.BorderBrush = Brushes.Gray;
+            txtPassword.BorderBrush = Brushes.Gray;
+            txtConfirmPassword.BorderBrush = Brushes.Gray;
+            dpDateOfBirth.BorderBrush = Brushes.Gray;
+            txtPhoneNumber.BorderBrush = Brushes.Gray;
+            txtAddress.BorderBrush = Brushes.Gray;
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void SendConfirmationEmail(string toEmail, string fullName)
+        {
+            var fromAddress = new MailAddress("dungbd07@gmail.com", "Club Management");
+            var toAddress = new MailAddress(toEmail, fullName);
+            const string fromPassword = "qxuu rbkd khoy ubwu";
+            const string subject = "Welcome to Club Management!";
+            string body = $"Dear {fullName},\n\nYour account has been successfully registered!\n\nBest regards,\nClub Management Team";
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new System.Net.NetworkCredential(fromAddress.Address, fromPassword)
             };
 
+            using (var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                smtp.Send(message);
+            }
+        }
 
-            _context.Users.Add(user);
-            _context.SaveChanges();
-            MessageBox.Show("Đăng ký thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-            Login login = new Login();
-            login.Show();
-            this.Close();
+        private void dpDateOfBirth_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // Mở lịch khi nhấp vào DatePicker
+            if (sender is DatePicker datePicker)
+            {
+                datePicker.IsDropDownOpen = true;
+            }
         }
 
         private void tbLogin_Click(object sender, RoutedEventArgs e)
         {
-            Login login = new Login();
-            login.Show();
+            Login loginWindown = new Login();
+            loginWindown.Show();
             this.Close();
         }
 
         private void tbForgotPassword_Click(object sender, RoutedEventArgs e)
         {
-            ForgotPassword ForgotPasswordWindown = new ForgotPassword();
-            ForgotPasswordWindown.Show();
+            ForgotPassword ForgotPasswordWindow = new ForgotPassword();
+            ForgotPasswordWindow.Show();
             this.Close();
         }
-
     }
 }

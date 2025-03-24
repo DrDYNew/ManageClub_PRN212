@@ -15,6 +15,10 @@ public partial class Club
 
     public int? PresidentId { get; set; }
 
+    public string ClubStatus { get; set; } = null!;
+
+    public decimal? TotalCost { get; set; }
+
     public virtual ICollection<ClubFinance> ClubFinances { get; set; } = new List<ClubFinance>();
 
     public virtual ICollection<ClubMember> ClubMembers { get; set; } = new List<ClubMember>();

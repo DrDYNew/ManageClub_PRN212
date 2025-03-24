@@ -11,6 +11,8 @@ public partial class EventParticipant
 
     public int UserId { get; set; }
 
+    public string? Reason { get; set; }
+
     public DateTime? RegistrationDate { get; set; }
 
     public string Status { get; set; } = null!;

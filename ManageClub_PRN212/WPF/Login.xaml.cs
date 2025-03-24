@@ -11,7 +11,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ManageClub_PRN212.DAO;
 using ManageClub_PRN212.Models;
+using ManageClub_PRN212.WPF.Admin;
+using ManageClub_PRN212.WPF.Member;
+using ManageClub_PRN212.WPF.President;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using static ManageClub_PRN212.Models.User;
@@ -23,11 +27,9 @@ namespace ManageClub_PRN212.WPF
     /// </summary>
     public partial class Login : Window
     {
-        ManageClubContext _context;
         public Login()
         {
             InitializeComponent();
-            _context = new ManageClubContext();
         }
 
         private void btnSubmit_Click(object sender, RoutedEventArgs e)
@@ -43,37 +45,47 @@ namespace ManageClub_PRN212.WPF
             }
             if (msg.Length > 0)
             {
-                MessageBox.Show(msg);
+                MessageBox.Show(msg, "Validation", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            User user = _context.Users.Include(x => x.Role).Where(x => x.Email == txtEmail.Text && x.Password == txtPassword.Password).FirstOrDefault();
+            User user = UserDAO.GetUserByLogIn(txtEmail.Text, txtPassword.Password);
 
             if (user == null)
             {
-                MessageBox.Show("Email or password wrong! input again");
+                MessageBox.Show("Email or password wrong! input again", "Validation", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             else
             {
                 if (user.Status == "Inactive")
                 {
-                    MessageBox.Show("Tài khoản bị vô hiệu hóa");
+                    MessageBox.Show("The account has been disabled.", "Validation", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
                 SessionDataUser.users.Add(user);
-                if (user.RoleId == 1 || user.RoleId == 3)
+
+                switch (user.RoleId)
                 {
-                    AccountWindow accountWindown = new AccountWindow();
-                    accountWindown.Show();
-                    this.Close();
-                }
-                else
-                {
-                    ProfileWindow accountWindown = new ProfileWindow();
-                    accountWindown.Show();
-                    this.Close();
+                    case 1:
+                        AccountWindow accountWindow = new AccountWindow();
+                        accountWindow.Show();
+                        this.Close();
+                        break;
+                    case 2:
+                        EventWPF eventWPF = new EventWPF(user);
+                        eventWPF.Show();
+                        this.Close();
+                        break;
+                    case 3:
+                        UserEventWPF userEventWPF = new UserEventWPF(user);
+                        userEventWPF.Show();
+                        this.Close();
+                        break;
+                    default:
+                        MessageBox.Show("Vai trò không hợp lệ!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                        break;
                 }
             }
         }
@@ -89,6 +101,11 @@ namespace ManageClub_PRN212.WPF
         {
             Register registerWindow = new Register();
             registerWindow.Show();
+            this.Close();
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
             this.Close();
         }
     }

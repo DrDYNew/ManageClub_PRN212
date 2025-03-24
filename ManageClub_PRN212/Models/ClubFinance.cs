@@ -11,7 +11,7 @@ public partial class ClubFinance
 
     public string? TransactionType { get; set; }
 
-    public decimal Amount { get; set; }
+    public double Price { get; set; }
 
     public string? Description { get; set; }
 

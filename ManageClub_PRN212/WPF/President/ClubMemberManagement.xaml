@@ -1,0 +1,202 @@
+﻿<Window x:Class="ManageClub_PRN212.WPF.President.ClubMemberManagement"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ManageClub_PRN212.WPF.President"
+        mc:Ignorable="d"
+        Title="Event Participants" Height="600" Width="1617"
+        WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        Background="#F5F5F5">
+    <Window.Resources>
+        
+        <!-- Style cho TextBlock -->
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="Margin" Value="0,5,5,5"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Style cho Button -->
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Style cho Accept Button -->
+        <Style x:Key="AcceptButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="#4CAF50"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#388E3C"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#388E3C"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Style cho Reject Button -->
+        <Style x:Key="RejectButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="#EF5350"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D32F2F"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#D32F2F"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Style cho Sidebar Button -->
+        <Style x:Key="SidebarButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="Margin" Value="0,2,0,0"/>
+            <Setter Property="Background" Value="#2F2F2F"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                                <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#3F3F3F"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Style cho Sidebar Button khi được chọn -->
+        <Style x:Key="SelectedSidebarButtonStyle" TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
+            <Setter Property="Background" Value="#1976D2"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1565C0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="Padding" Value="12,0,12,0"/>
+
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+    </Window.Resources>
+
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="#212121" Padding="0">
+            <StackPanel>
+                <TextBlock Text="Club President" FontSize="20" FontWeight="Bold" 
+               Foreground="White" Margin="10,20,0,20" HorizontalAlignment="Center"/>
+
+                <!-- Menu Items with Icons (using Unicode) -->
+                <Button x:Name="BtnClubMemberManagement" Content="👤 Club Member Management" 
+            Style="{StaticResource SidebarButtonStyle}"/>
+                <Button x:Name="BtnEventManagement" Content="📅 Event Management" 
+            Style="{StaticResource SidebarButtonStyle}"/>
+                <Button x:Name="BtnParticipants" Content="👥 Participants" 
+            Style="{StaticResource SidebarButtonStyle}"/>
+                <Button x:Name="BtnJoinListEvent" Content="👥 Join List Event" 
+            Style="{StaticResource SidebarButtonStyle}"/>
+                <Button x:Name="BtnLogout" Content="🚪 Logout" 
+            Style="{StaticResource SidebarButtonStyle}" Margin="0,20,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Content Area -->
+        <Grid Grid.Column="1" Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <TextBlock Grid.Row="0" Text="Club Member Management" FontSize="20" FontWeight="Bold" 
+                   Foreground="#2E7D32" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 0, 0, 10">
+                <ComboBox Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0, 0, 900, 0" Width="210"
+                          Name="cbClubs" SelectionChanged="cbClubs_SelectionChanged"/>
+                <Button Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Add New Member" Background="#2E7D32" BorderBrush="#2E7D32" 
+                        Foreground="White" Width="120" Height="30" Name="txtAddMember" Click="txtAddMember_Click" />
+            </StackPanel>
+            <!-- Participants List -->
+            <DataGrid x:Name="dgMembers" Grid.Row="2" AutoGenerateColumns="False" 
+                  SelectionMode="Single" CanUserAddRows="False" Background="White" 
+                  BorderBrush="#A5D6A7" BorderThickness="1" IsReadOnly ="True"
+                      VerticalContentAlignment="Center">
+                <DataGrid.Columns>
+                    <!-- Thêm cột ID -->
+                    <DataGridTextColumn Header="ID" Binding="{Binding MembershipId}" Width="50"/>
+                    <DataGridTemplateColumn Header="Member Name" Width="150">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding User.FullName}" 
+                                    Background="Transparent" BorderThickness="0" Foreground="#1976D2"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Joined Date" Binding="{Binding JoinDate, StringFormat=dd/MM/yyyy}" Width="120"/>
+                    <DataGridTextColumn Header="Member Status" Binding="{Binding MemberStatus}" Width="100"/>
+                    <DataGridTemplateColumn Header="Action" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Content="View/Edit" Style="{StaticResource AcceptButtonStyle}" 
+                                            Tag="{Binding ClubId}" Name="btnEditClub" Click="btnEditClub_Click"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!-- Close Button -->
+            <Button x:Name="btnClose" Grid.Row="3" Content="Close" 
+                HorizontalAlignment="Right" Margin="0,10,0,0" Background="#EF5350" BorderBrush="#D32F2F" Foreground="White" Height="25" VerticalAlignment="Top" Click="btnClose_Click"/>
+        </Grid>
+    </Grid>
+</Window>
