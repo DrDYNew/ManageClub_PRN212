@@ -11,44 +11,58 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ManageClub_PRN212.DAO;
 using ManageClub_PRN212.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using static ManageClub_PRN212.Models.User;
 
-namespace ManageClub_PRN212.WPF
+namespace ManageClub_PRN212.WPF.Admin
 {
     /// <summary>
     /// Interaction logic for AccountWindow.xaml
     /// </summary>
     public partial class AccountWindow : Window
     {
-        ManageClubContext _context;
         public AccountWindow()
         {
             InitializeComponent();
-            _context = new ManageClubContext();
             LoadList();
             LoadComboBox();
         }
 
         public void LoadList()
         {
-            IEnumerable<User> users = _context.Users.Include(x => x.Role).ToList();
-            lvUser.ItemsSource = users;
+            IEnumerable<User> users = UserDAO.GetUserWithRole();
+            dgAccounts.ItemsSource = users;
         }
 
         public void LoadComboBox()
         {
-            IEnumerable<Role> roles = _context.Roles.ToList();
+            IEnumerable<Role> roles = RoleDAO.GetRoles();
             cbRoles.ItemsSource = roles;
         }
 
-        private void lvUser_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void BtnClubManagement_Click(object sender, RoutedEventArgs e)
         {
-            if (lvUser.SelectedItem != null)
+            ClubManagement clubManagement = new ClubManagement(SessionDataUser.users[0]);
+            clubManagement.Show();
+            this.Close();
+        }
+
+        private void BtnLogout_Click(object sender, RoutedEventArgs e)
+        {
+            SessionDataUser.users.Clear();
+            Login loginWindown = new Login();
+            loginWindown.Show();
+            this.Close();
+        }
+
+        private void dgAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dgAccounts.SelectedItem != null)
             {
-                User user = (User)lvUser.SelectedItem;
+                User user = (User)dgAccounts.SelectedItem;
 
                 txtId.Text = user.UserId.ToString();
                 if (user.Status == "Active")
@@ -59,23 +73,29 @@ namespace ManageClub_PRN212.WPF
                 {
                     cbStatus.IsChecked = false;
                 }
+                dpEventDate.SelectedDate = user.DateJoined;
                 cbRoles.SelectedValue = user.RoleId;
             }
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
 
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
             if (txtId.Text.IsNullOrEmpty() == true)
             {
-                MessageBox.Show("Vui lòng chọn User để Update", "Get User");
+                MessageBox.Show("Please select a user to update.", "Get User");
                 return;
             }
 
-            User user = _context.Users.FirstOrDefault(x => x.UserId == int.Parse(txtId.Text));
+            User user = UserDAO.GetUserById(Int32.Parse(txtId.Text));
 
             if (user == null)
             {
-                MessageBox.Show("Không thể lấy user", "Get User");
+                MessageBox.Show("Cannot get user", "Get User");
                 return;
             }
             else
@@ -91,27 +111,18 @@ namespace ManageClub_PRN212.WPF
 
                 user.RoleId = int.Parse(cbRoles.SelectedValue.ToString());
 
-                _context.Users.Update(user);
-                _context.SaveChanges();
+                UserDAO.UpdateUser(user);
+
                 LoadList();
                 MessageBox.Show($"{user.UserId} update successfully", "Update");
             }
 
         }
 
-        private void btnProfile_Click(object sender, RoutedEventArgs e)
+        private void BtnMyProfile_Click(object sender, RoutedEventArgs e)
         {
-            ProfileWindow profileWindown = new ProfileWindow();
-            profileWindown.Show();
-            this.Close();
-        }
-
-        private void btnLogout_Click(object sender, RoutedEventArgs e)
-        {
-            SessionDataUser.users.Clear();
-            Login loginWindown = new Login();
-            loginWindown.Show();
-            this.Close();
+            ProfileWindow profileWindow = new ProfileWindow();
+            profileWindow.ShowDialog();
         }
     }
 }

@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ManageClub_PRN212.DAO;
 using ManageClub_PRN212.Models;
+using ManageClub_PRN212.WPF.Admin;
+using ManageClub_PRN212.WPF.Member;
+using ManageClub_PRN212.WPF.President;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using static ManageClub_PRN212.Models.User;
@@ -71,10 +74,17 @@ namespace ManageClub_PRN212.WPF
                         this.Close();
                         break;
                     case 2:
+                        EventWPF eventWPF = new EventWPF(user);
+                        eventWPF.Show();
+                        this.Close();
                         break;
                     case 3:
+                        UserEventWPF userEventWPF = new UserEventWPF(user);
+                        userEventWPF.Show();
+                        this.Close();
                         break;
-                    case 4:
+                    default:
+                        MessageBox.Show("Vai trò không hợp lệ!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                         break;
                 }
             }

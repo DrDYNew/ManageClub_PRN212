@@ -11,7 +11,7 @@ public partial class Club
 
     public string? Description { get; set; }
 
-    public DateTime? EstablishedDate { get; set; }
+    public DateOnly? EstablishedDate { get; set; }
 
     public int? PresidentId { get; set; }
 

@@ -1,12 +1,12 @@
-﻿<Window x:Class="ManageClub_PRN212.WPF.ClubManagement"
+﻿<Window x:Class="ManageClub_PRN212.WPF.Admin.ClubManagement"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ManageClub_PRN212.WPF"
+        xmlns:local="clr-namespace:ManageClub_PRN212.WPF.Admin"
         mc:Ignorable="d"
-        Title="Event Participants" Height="800" Width="1200"
-        WindowStartupLocation="CenterScreen"
+        Title="Event Participants" Height="600" Width="1617"
+        WindowStartupLocation="CenterScreen" WindowState="Maximized"
         Background="#F5F5F5">
     <Window.Resources>
         <!-- Định nghĩa Converter -->
@@ -137,9 +137,9 @@
                 <Button x:Name="BtnAccountManagement" Content="🔑 Account Management" Style="{StaticResource SidebarButtonStyle}"
                         Click="BtnAccountManagement_Click"/>
                 <Button x:Name="BtnClubManagement" Content="🏠 Club Management" Style="{StaticResource SidebarButtonStyle}"/>
-                <Button x:Name="BtnEventManagement" Content="📅 Event Management" Style="{StaticResource SidebarButtonStyle}" />
-                <Button x:Name="BtnParticipants" Content="👥 Participants" Style="{StaticResource SidebarButtonStyle}"/>
-                <Button x:Name="BtnLogout" Content="🚪 Logout" Style="{StaticResource SidebarButtonStyle}" Margin="0,20,0,0"/>
+                <Button x:Name="BtnMyProfile" Content="👤 My Profile" Style="{StaticResource SidebarButtonStyle}" Click="BtnMyProfile_Click"/>
+                <Button x:Name="BtnLogout" Content="🚪 Logout" Style="{StaticResource SidebarButtonStyle}" 
+                        Margin="0,20,0,0" Click="BtnLogout_Click"/>
             </StackPanel>
 
         </Border>
@@ -160,9 +160,8 @@
                     Content="Add New Club" Background="#2E7D32" BorderBrush="#2E7D32" 
                     Foreground="White" Click="btnAddClub_Click" Width="100" Height="30"/>
 
-            <!-- Participants List -->
             <DataGrid Name="dgClubs" Grid.Row="2" AutoGenerateColumns="False" 
-                       CanUserAddRows="False" Background="White" 
+                       CanUserAddRows="False" Background="White" SelectionMode="Single" 
                       BorderBrush="#A5D6A7" BorderThickness="1" IsReadOnly="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Club Id" Binding="{Binding ClubId}" Width="50"/>
@@ -176,11 +175,9 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <Button Content="View/Edit" Style="{StaticResource AcceptButtonStyle}" 
-                                             Tag="{Binding}"/>
-                                    <Button Content="View Club" Style="{StaticResource SusButtonStyle}" 
-                                            Tag="{Binding}"/>
+                                             Tag="{Binding ClubId}" Name="btnEditClub" Click="btnEditClub_Click"/>
                                     <Button Content="Remove" Style="{StaticResource RejectButtonStyle}" 
-                                             Tag="{Binding}"/>
+                                             Tag="{Binding ClubId}" Name="btnRemove" Click="BtnRemoveClub_Click"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -190,7 +187,7 @@
 
             <!-- Close Button -->
             <Button x:Name="btnClose" Grid.Row="3" Foreground="White" Content="Close" 
-                    HorizontalAlignment="Right" Margin="0,10,0,0" Background="#EF5350" BorderBrush="#D32F2F"/>
+                    HorizontalAlignment="Right" Margin="0,10,0,0" Background="#EF5350" BorderBrush="#D32F2F" Click="btnClose_Click"/>
         </Grid>
     </Grid>
 </Window>

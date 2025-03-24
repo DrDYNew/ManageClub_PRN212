@@ -1,0 +1,157 @@
+﻿<Window x:Class="ManageClub_PRN212.WPF.Admin.ReportWPF"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ManageClub_PRN212.WPF.Admin"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        mc:Ignorable="d"
+        Title="Club Monthly Report" Height="700" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F5F5">
+    <Window.Resources>
+        <!-- Định nghĩa các Style -->
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="Margin" Value="0,5,5,5"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="EditButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="#1976D2"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#1565C0"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1565C0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SidebarButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="Margin" Value="0,2,0,0"/>
+            <Setter Property="Background" Value="#2F2F2F"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                                <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#3F3F3F"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SelectedSidebarButtonStyle" TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
+            <Setter Property="Background" Value="#1976D2"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1565C0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <Border Grid.Column="0" Background="#1E88E5" Padding="0">
+            <StackPanel>
+                <TextBlock Text="Admin Dashboard" FontSize="20" FontWeight="Bold" 
+                           Foreground="White" Margin="10,20,0,20" HorizontalAlignment="Center"/>
+
+                <Button x:Name="BtnUserManagement" Content="👤 User Management" 
+                        Style="{StaticResource SidebarButtonStyle}" Click="BtnUserManagement_Click"/>
+                <Button x:Name="BtnClubManagement" Content="🏢 Club Management" 
+                        Style="{StaticResource SidebarButtonStyle}" Click="BtnClubManagement_Click"/>
+                <Button x:Name="BtnReport" Content="📊 Report" 
+                        Style="{StaticResource SidebarButtonStyle}" Click="BtnReport_Click"/>
+                <Button x:Name="BtnLogout" Content="🚪 Logout" 
+                        Style="{StaticResource SidebarButtonStyle}" Click="BtnLogout_Click" Margin="0,20,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Content Area -->
+        <Grid Grid.Column="1" Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header and Filters -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                <TextBlock Text="Select Month:" VerticalAlignment="Center"/>
+                <ComboBox x:Name="cbMonth" Width="150" Margin="5" SelectionChanged="CbMonth_SelectionChanged"/>
+                <TextBlock Text="Report Type:" VerticalAlignment="Center" Margin="20,0,0,0"/>
+                <ComboBox x:Name="cbReportType" Width="150" Margin="5" SelectionChanged="CbReportType_SelectionChanged">
+                    <ComboBoxItem Content="New Members (Pie)"/>
+                    <ComboBoxItem Content="Events (Column)"/>
+                    <ComboBoxItem Content="Participants (Pie)"/>
+                    <ComboBoxItem Content="Total Cost (Column)"/>
+                    <ComboBoxItem Content="Feedback (Column)"/>
+                </ComboBox>
+                <Button x:Name="btnExportPdf" Content="Export to PDF" Style="{StaticResource EditButtonStyle}" Click="BtnExportPdf_Click"/>
+            </StackPanel>
+
+            <!-- Chart Area -->
+            <Grid Grid.Row="1">
+                <lvc:PieChart x:Name="pieChart" Visibility="Collapsed" LegendLocation="Right" Margin="10"/>
+                <lvc:CartesianChart x:Name="columnChart" Visibility="Collapsed" LegendLocation="Right" Margin="10">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Clubs"/>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Value" MinValue="0"/>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+            </Grid>
+
+            <!-- Close Button -->
+            <Button x:Name="btnClose" Grid.Row="2" Content="Close" HorizontalAlignment="Right" Margin="0,10,0,0" 
+                    Background="#EF5350" BorderBrush="#D32F2F" Click="BtnClose_Click"/>
+        </Grid>
+    </Grid>
+</Window>

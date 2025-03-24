@@ -17,6 +17,8 @@ public partial class EventFeedback
 
     public DateTime? CreatedAt { get; set; }
 
+    public string Status { get; set; } = null!;
+
     public virtual Event Event { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
