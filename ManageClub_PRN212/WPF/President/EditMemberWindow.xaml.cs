@@ -89,7 +89,6 @@ namespace ManageClub_PRN212.WPF.President
             var filteredUser = UserDAO.GetUserOutsideClubExceptRoleId(clubId, 1).Where(u => u.FullName.ToLower().Contains(searchText)).ToList();
             cbMember.ItemsSource = filteredUser;
             cbMember.SelectedIndex = 0;
-            cbMember.IsDropDownOpen = true;
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)

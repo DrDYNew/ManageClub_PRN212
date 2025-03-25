@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Club Monthly Report" Height="700" Width="1200"
         WindowStartupLocation="CenterScreen"
-        Background="#F5F5F5">
+        Background="#F5F5F5" WindowState="Maximized">
     <Window.Resources>
         <!-- Định nghĩa các Style -->
         <Style TargetType="TextBlock">
@@ -97,17 +97,17 @@
         </Grid.ColumnDefinitions>
 
         <!-- Sidebar -->
-        <Border Grid.Column="0" Background="#1E88E5" Padding="0">
+        <Border Grid.Column="0" Background="#212121" Padding="0">
             <StackPanel>
-                <TextBlock Text="Admin Dashboard" FontSize="20" FontWeight="Bold" 
+                <TextBlock Text="Admin" FontSize="20" FontWeight="Bold" 
                            Foreground="White" Margin="10,20,0,20" HorizontalAlignment="Center"/>
 
-                <Button x:Name="BtnUserManagement" Content="👤 User Management" 
-                        Style="{StaticResource SidebarButtonStyle}" Click="BtnUserManagement_Click"/>
-                <Button x:Name="BtnClubManagement" Content="🏢 Club Management" 
-                        Style="{StaticResource SidebarButtonStyle}" Click="BtnClubManagement_Click"/>
-                <Button x:Name="BtnReport" Content="📊 Report" 
-                        Style="{StaticResource SidebarButtonStyle}" Click="BtnReport_Click"/>
+                <Button x:Name="BtnAccountManagement" Content="🔑 Account Management" Style="{StaticResource SidebarButtonStyle}" Click="BtnAccountManagement_Click"/>
+                <Button x:Name="BtnClubManagement" Content="🏠 Club Management" Style="{StaticResource SidebarButtonStyle}" Click="BtnClubManagement_Click"/>
+                <Button x:Name="BtnReport" Content="📊 Report" Style="{StaticResource SidebarButtonStyle}"/>
+                <Button x:Name="BtnUserManagement" Content="👤 User Management" Style="{StaticResource SidebarButtonStyle}" Click="BtnUserManagement_Click"/>
+                <Button x:Name="BtnAttendance" Content="📅 Event Attendance" Style="{StaticResource SidebarButtonStyle}" Click="BtnAttendance_Click"/>
+                <Button x:Name="BtnMyProfile" Content="👤 My Profile" Style="{StaticResource SidebarButtonStyle}" Click="BtnMyProfile_Click"/>
                 <Button x:Name="BtnLogout" Content="🚪 Logout" 
                         Style="{StaticResource SidebarButtonStyle}" Click="BtnLogout_Click" Margin="0,20,0,0"/>
             </StackPanel>

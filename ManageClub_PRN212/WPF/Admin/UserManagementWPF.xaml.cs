@@ -10,6 +10,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using ManageClub_PRN212.WPF.Admin;
+using static ManageClub_PRN212.Models.User;
 
 namespace ManageClub_PRN212.WPF.Admin
 {
@@ -25,6 +26,8 @@ namespace ManageClub_PRN212.WPF.Admin
         public UserManagementWPF(User user)
         {
             InitializeComponent();
+            _userDAO = new UserDAO();
+            _roleDAO = new RoleDAO();
             _currentUser = user;
             _userDAO = new UserDAO();
             LoadUsers();
@@ -89,7 +92,7 @@ namespace ManageClub_PRN212.WPF.Admin
                     Email = txtEmail.Text,
                     RoleId = ((Role)cbRole.SelectedItem).RoleId,
                     Password = HashPassword(password),
-                    DateOfBirth = dpDateOfBirth.SelectedDate.HasValue ? DateOnly.FromDateTime(dpDateOfBirth.SelectedDate.Value) : (DateOnly?)null,
+                    DateOfBirth = dpDateOfBirth.SelectedDate ?? DateTime.MinValue,
                     PhoneNumber = txtPhoneNumber.Text,
                     Address = txtAddress.Text,
                     Status = "Active",
@@ -119,7 +122,7 @@ namespace ManageClub_PRN212.WPF.Admin
                     _selectedUser.FullName = txtFullName.Text;
                     _selectedUser.Email = txtEmail.Text;
                     _selectedUser.RoleId = ((Role)cbRole.SelectedItem).RoleId;
-                    _selectedUser.DateOfBirth = dpDateOfBirth.SelectedDate.HasValue ? DateOnly.FromDateTime(dpDateOfBirth.SelectedDate.Value) : (DateOnly?)null;
+                    _selectedUser.DateOfBirth = dpDateOfBirth.SelectedDate ?? DateTime.MinValue;
                     _selectedUser.PhoneNumber = txtPhoneNumber.Text;
                     _selectedUser.Address = txtAddress.Text;
                     _selectedUser.Status = cbStatus.SelectedItem.ToString();
@@ -246,6 +249,7 @@ namespace ManageClub_PRN212.WPF.Admin
             var result = MessageBox.Show("Are you sure you want to logout?", "Logout", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
+                SessionDataUser.users.Clear();
                 new Login().Show();
                 this.Close();
             }
@@ -254,6 +258,22 @@ namespace ManageClub_PRN212.WPF.Admin
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void BtnAccountManagement_Click(object sender, RoutedEventArgs e)
+        {
+            new AccountWindow().Show();
+            this.Close();
+        }
+
+        private void BtnMyProfile_Click(object sender, RoutedEventArgs e)
+        {
+            new ProfileWindow().ShowDialog();
+        }
+
+        private void BtnAttendance_Click(object sender, RoutedEventArgs e)
+        {
+            new AttendanceWPF(SessionDataUser.users[0]).ShowDialog();
         }
     }
 }

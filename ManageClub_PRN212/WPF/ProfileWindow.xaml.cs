@@ -49,10 +49,10 @@ namespace ManageClub_PRN212.WPF
             if (user != null)
             {
                 txtName.Text = user.FullName;
-                    txtEmail.Text = user.Email;
+                txtEmail.Text = user.Email;
                 dpDatePicker.SelectedDate = user.DateOfBirth;
-                    txtPhone.Text = user.PhoneNumber.ToString();
-                    txtAddress.Text = user.Address;
+                txtPhone.Text = user.PhoneNumber.ToString();
+                txtAddress.Text = user.Address;
             }
             else
             {

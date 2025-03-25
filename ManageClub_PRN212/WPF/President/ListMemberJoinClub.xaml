@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManageClub_PRN212.WPF.President"
         mc:Ignorable="d"
-        Title="Club Members List" Height="600" Width="1200"
+        Title="Club Members List" Height="500" Width="1200"
         WindowStartupLocation="CenterScreen"
         Background="#F0F4F8"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded" WindowState="Maximized">
     <Window.Resources>
         <!-- Enhanced Styles -->
         <Style TargetType="TextBlock">
@@ -108,7 +108,7 @@
             <Setter Property="Height" Value="50"/>
             <Setter Property="Width" Value="{Binding ElementName=sidebarBorder, Path=ActualWidth}"/>
             <Setter Property="Margin" Value="0,2,0,0"/>
-            <Setter Property="Background" Value="#2D3748"/>
+            <Setter Property="Background" Value="#2F2F2F"/>
             <Setter Property="Foreground" Value="#EDF2F7"/>
             <Setter Property="FontSize" Value="15"/>
             <Setter Property="FontWeight" Value="Medium"/>
@@ -156,31 +156,33 @@
 
     </Window.Resources>
 
-    <Grid Margin="10,0,10,10" Height="564" VerticalAlignment="Bottom">
+    <Grid Margin="10,0,10,10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="{Binding SidebarWidth}"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <!-- Sidebar -->
-        <Border x:Name="sidebarBorder" Grid.Column="0" Background="#1A202C" Padding="0" HorizontalAlignment="Left">
+        <Border x:Name="sidebarBorder" Grid.Column="0" Background="#212121" Padding="0" HorizontalAlignment="Left">
             <StackPanel Width="250">
-                <Button Content="☰" Style="{StaticResource ToggleButtonStyle}" Click="BtnToggleSidebar_Click"/>
                 <TextBlock Text="Club President" FontSize="20" FontWeight="Bold" 
-                           Foreground="#EDF2F7" Margin="10,10,0,20" HorizontalAlignment="Center"/>
+                           Foreground="#EDF2F7" Margin="0,20,0,20" HorizontalAlignment="Center"/>
 
+                <Button x:Name="BtnClubMemberManagement" Content="👤 Club Member Management" 
+Style="{StaticResource SidebarButtonStyle}" Click="BtnClubMemberManagement_Click"/>
                 <Button x:Name="BtnEventManagement" Content="📅 Event Management" 
-                        Style="{StaticResource SidebarButtonStyle}" Click="BtnEventManagement_Click"/>
+Style="{StaticResource SidebarButtonStyle}" Click="BtnEventManagement_Click"/>
                 <Button x:Name="BtnParticipants" Content="👥 Participants" 
-                        Style="{StaticResource SidebarButtonStyle}" Click="BtnParticipants_Click"/>
+Style="{StaticResource SidebarButtonStyle}" Click="BtnParticipants_Click"/>
                 <Button x:Name="BtnJoinListEvent" Content="👥 Join List Event" 
-                        Style="{StaticResource SidebarButtonStyle}" Click="BtnJoinListEvent_Click"/>
-                <Button x:Name="BtnMembers" Content="👤 Members" 
-                        Style="{StaticResource SidebarButtonStyle}" Click="BtnMembers_Click"/>
-                <Button x:Name="BtnManageClubFinance" Content="💰 Club Finance" 
+Style="{StaticResource SidebarButtonStyle}" Click="BtnJoinListEvent_Click"/>
+                <Button x:Name="BtnMemberJoinClub" Content="🤝 Member Join Club" 
+Style="{StaticResource SidebarButtonStyle}" Click="BtnListMemberJoinClub_Click"/>
+                <Button x:Name="BtnClubFinance" Content="💰 Club Finance" 
 Style="{StaticResource SidebarButtonStyle}" Click="BtnManageClubFinance_Click"/>
+                <Button x:Name="BtnAttendance" Content="📅 Event Attendance" Style="{StaticResource SidebarButtonStyle}" Click="BtnAttendance_Click"/>
                 <Button x:Name="BtnLogout" Content="🚪 Logout" 
-                        Style="{StaticResource SidebarButtonStyle}" Click="BtnLogout_Click" Margin="0,20,0,0"/>
+Style="{StaticResource SidebarButtonStyle}" Margin="0,20,0,0" Click="BtnLogout_Click"/>
             </StackPanel>
         </Border>
 

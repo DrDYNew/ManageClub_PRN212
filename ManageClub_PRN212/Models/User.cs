@@ -15,7 +15,7 @@ public partial class User
 
     public int RoleId { get; set; }
 
-    public DateOnly? DateOfBirth { get; set; }
+    public DateTime? DateOfBirth { get; set; }
 
     public string? PhoneNumber { get; set; }
 

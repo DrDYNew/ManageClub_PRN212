@@ -22,11 +22,14 @@ namespace ManageClub_PRN212.WPF.Admin
     /// </summary>
     public partial class ClubManagement : Window
     {
-        User currentUser;
+        private User currentUser;
+        private Button _selectedButton;
         public ClubManagement(User user)
         {
             InitializeComponent();
             currentUser = user;
+            _selectedButton = BtnClubManagement;
+            _selectedButton.Style = (Style)FindResource("SelectedSidebarButtonStyle");
             LoadDataGridClub();
         }
 
@@ -95,6 +98,23 @@ namespace ManageClub_PRN212.WPF.Admin
         {
             ProfileWindow profileWindow = new ProfileWindow();
             profileWindow.ShowDialog();
+        }
+
+        private void BtnReport_Click(object sender, RoutedEventArgs e)
+        {
+            new ReportWPF(currentUser).Show();
+            this.Close();
+        }
+
+        private void BtnUserManagement_Click(object sender, RoutedEventArgs e)
+        {
+            new UserManagementWPF(currentUser).Show();
+            this.Close();
+        }
+
+        private void BtnAttendance_Click(object sender, RoutedEventArgs e)
+        {
+            new AttendanceWPF(SessionDataUser.users[0]).ShowDialog();
         }
     }
 }

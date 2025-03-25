@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using static ManageClub_PRN212.Models.User;
 
 namespace ManageClub_PRN212.WPF.President
 {
@@ -36,7 +37,7 @@ namespace ManageClub_PRN212.WPF.President
             }
 
             dgClubFinance.ItemsSource = ClubFinances;
-            _selectedButton = BtnManageClubFinance;
+            _selectedButton = BtnClubFinance;
             _selectedButton.Style = (Style)FindResource("SelectedSidebarButtonStyle");
         }
 
@@ -286,9 +287,21 @@ namespace ManageClub_PRN212.WPF.President
             var result = MessageBox.Show("Are you sure you want to logout?", "Logout", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
+                SessionDataUser.users.Clear();
                 new Login().Show();
                 Close();
             }
+        }
+
+        private void BtnClubMemberManagement_Click(object sender, RoutedEventArgs e)
+        {
+            new ClubMemberManagement(_currentUser).Show();
+            this.Close();
+        }
+
+        private void BtnAttendance_Click(object sender, RoutedEventArgs e)
+        {
+            new AttendanceWPF(SessionDataUser.users[0]).ShowDialog();
         }
     }
 }

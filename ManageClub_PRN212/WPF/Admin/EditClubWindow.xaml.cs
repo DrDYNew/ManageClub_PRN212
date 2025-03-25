@@ -96,7 +96,6 @@ namespace ManageClub_PRN212.WPF.Admin
             var filteredUser = UserDAO.GetUsers().Where(u => u.FullName.ToLower().Contains(searchText)).ToList();
             cbPresident.ItemsSource = filteredUser;
             cbPresident.SelectedIndex = 0;
-            cbPresident.IsDropDownOpen = true;
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)

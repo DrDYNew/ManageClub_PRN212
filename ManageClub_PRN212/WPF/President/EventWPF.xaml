@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Event Management" Height="600" Width="1617"
         WindowStartupLocation="CenterScreen"
-        Background="#F0F4F8">
+        Background="#F0F4F8" WindowState="Maximized">
     <Window.Resources>
         <!-- Giữ nguyên các style như trước -->
         <Style TargetType="TextBlock">
@@ -142,18 +142,21 @@
                 <TextBlock Text="Club President" FontSize="20" FontWeight="Bold" 
                            Foreground="White" Margin="10,10,0,20" HorizontalAlignment="Center"/>
 
+                <Button x:Name="BtnClubMemberManagement" Content="👤 Club Member Management" 
+Style="{StaticResource SidebarButtonStyle}" Click="BtnClubMemberManagement_Click"/>
                 <Button x:Name="BtnEventManagement" Content="📅 Event Management" 
-          Style="{StaticResource SidebarButtonStyle}" Click="BtnEventManagement_Click"/>
+Style="{StaticResource SidebarButtonStyle}" Click="BtnEventManagement_Click"/>
                 <Button x:Name="BtnParticipants" Content="👥 Participants" 
-          Style="{StaticResource SidebarButtonStyle}" Click="BtnParticipants_Click"/>
+Style="{StaticResource SidebarButtonStyle}" Click="BtnParticipants_Click"/>
                 <Button x:Name="BtnJoinListEvent" Content="👥 Join List Event" 
-          Style="{StaticResource SidebarButtonStyle}" Click="BtnJoinListEvent_Click"/>
-                <Button x:Name="BtnListMemberJoinClub" Content="👤 Members" 
-          Style="{StaticResource SidebarButtonStyle}" Click="BtnListMemberJoinClub_Click"/>
-                <Button x:Name="BtnManageClubFinance" Content="💰 Club Finance" 
-          Style="{StaticResource SidebarButtonStyle}" Click="BtnManageClubFinance_Click"/>
+Style="{StaticResource SidebarButtonStyle}" Click="BtnJoinListEvent_Click"/>
+                <Button x:Name="BtnMemberJoinClub" Content="🤝 Member Join Club" 
+Style="{StaticResource SidebarButtonStyle}" Click="BtnListMemberJoinClub_Click"/>
+                <Button x:Name="BtnClubFinance" Content="💰 Club Finance" 
+Style="{StaticResource SidebarButtonStyle}" Click="BtnManageClubFinance_Click"/>
+                <Button x:Name="BtnAttendance" Content="📅 Event Attendance" Style="{StaticResource SidebarButtonStyle}" Click="BtnAttendance_Click"/>
                 <Button x:Name="BtnLogout" Content="🚪 Logout" 
-          Style="{StaticResource SidebarButtonStyle}" Click="BtnLogout_Click" Margin="0,20,0,0"/>
+Style="{StaticResource SidebarButtonStyle}" Margin="0,20,0,0" Click="BtnLogout_Click"/>
             </StackPanel>
         </Border>
 
@@ -217,6 +220,7 @@
                         <Button x:Name="btnAdd" Content="Add" Style="{StaticResource ContentButtonStyle}" Click="BtnAdd_Click"/>
                         <Button x:Name="btnEdit" Content="Edit" Style="{StaticResource ContentButtonStyle}" Click="BtnEdit_Click"/>
                         <Button x:Name="btnDelete" Content="Delete" Style="{StaticResource ContentButtonStyle}" Click="BtnDelete_Click"/>
+                        <Button x:Name="btnViewFeedback" Content="View Feedback" Style="{StaticResource ContentButtonStyle}"  Background="#9C27B0" Click="BtnViewFeedback_Click"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

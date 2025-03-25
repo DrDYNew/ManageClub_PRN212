@@ -9,6 +9,7 @@ using ManageClub_PRN212.Models;
 using System.Windows.Media;
 using System.Net.Mail;
 using System.Net;
+using static ManageClub_PRN212.Models.User;
 
 namespace ManageClub_PRN212.WPF.Member
 {
@@ -25,6 +26,7 @@ namespace ManageClub_PRN212.WPF.Member
         {
             InitializeComponent();
             _clubDAO = new ClubDAO();
+            _memberDAO = new ClubMemberDAO();
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
 
             Clubs = new ObservableCollection<Club>();
@@ -284,10 +286,27 @@ namespace ManageClub_PRN212.WPF.Member
             var result = MessageBox.Show("Are you sure you want to logout?", "Logout", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
+                SessionDataUser.users.Clear();
                 Login loginWindow = new Login();
                 loginWindow.Show();
                 this.Close();
             }
+        }
+
+        private void BtnMyProfile_Click(object sender, RoutedEventArgs e)
+        {
+            new ProfileWindow().ShowDialog();
+        }
+
+        private void BtnMyClubs_Click(object sender, RoutedEventArgs e)
+        {
+            new MyClub(_currentUser).Show();
+            this.Close();
+        }
+
+        private void BtnAttendance_Click(object sender, RoutedEventArgs e)
+        {
+            new AttendanceWPF(SessionDataUser.users[0]).ShowDialog();
         }
     }
 }

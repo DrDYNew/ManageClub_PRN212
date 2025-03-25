@@ -100,5 +100,52 @@ namespace ManageClub_PRN212.DAO
             }
         }
 
+        public List<ClubMember> GetAllClubMembers()
+        {
+            try
+            {
+                return _context.ClubMembers
+                    .Include("User")
+                    .Include("Club")
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error retrieving all club members: " + ex.Message, ex);
+            }
+        }
+
+        public void UpdateClubMemberStatus(int clubMemberId, string status)
+        {
+            try
+            {
+                var clubMember = _context.ClubMembers
+                    .FirstOrDefault(cm => cm.MembershipId == clubMemberId);
+                if (clubMember == null)
+                {
+                    throw new Exception($"Club member with ID {clubMemberId} not found.");
+                }
+
+                clubMember.MemberStatus = status;
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error updating club member status: {ex.Message}", ex);
+            }
+        }
+
+        public static List<Club> GetClubsOfMember(int userId)
+        {
+            using (ManageClubContext context = new ManageClubContext())
+            {
+                return context.Clubs
+                    .Where(cl => cl.ClubMembers.Any(cm => cm.UserId == userId && cm.MemberStatus != "Left"))
+                    .Include(cl => cl.ClubMembers) // Ensures members are loaded
+                    .ToList();
+            }
+        }
+
+
     }
 }

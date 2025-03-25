@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static ManageClub_PRN212.Models.User;
 
 namespace ManageClub_PRN212.WPF.President
 {
@@ -81,6 +82,58 @@ namespace ManageClub_PRN212.WPF.President
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void BtnClubMemberManagement_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnEventManagement_Click(object sender, RoutedEventArgs e)
+        {
+            new EventWPF(user).Show();
+            this.Close();
+        }
+
+        private void BtnParticipants_Click(object sender, RoutedEventArgs e)
+        {
+            new EventParticipantsWPF(user).Show();
+            this.Close();
+        }
+
+        private void BtnJoinListEvent_Click(object sender, RoutedEventArgs e)
+        {
+            new ListJoinEvent(user).Show();
+            this.Close();
+        }
+
+        private void BtnMemberJoinClub_Click(object sender, RoutedEventArgs e)
+        {
+            new ListMemberJoinClub(user).Show();
+            this.Close();
+        }
+
+        private void BtnClubFinance_Click(object sender, RoutedEventArgs e)
+        {
+            new ManageClubFinance(user).Show();
+            this.Close();
+        }
+
+        private void BtnLogout_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Are you sure you want to logout?", "Logout", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                SessionDataUser.users.Clear();
+                Login loginWindown = new Login();
+                loginWindown.Show();
+                this.Close();
+            }
+        }
+
+        private void BtnAttendance_Click(object sender, RoutedEventArgs e)
+        {
+            new AttendanceWPF(SessionDataUser.users[0]).ShowDialog();
         }
     }
 }

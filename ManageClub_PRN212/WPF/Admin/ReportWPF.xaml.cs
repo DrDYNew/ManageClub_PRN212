@@ -11,6 +11,7 @@ using LiveCharts.Wpf;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
+using static ManageClub_PRN212.Models.User;
 
 namespace ManageClub_PRN212.WPF.Admin
 {
@@ -233,7 +234,7 @@ namespace ManageClub_PRN212.WPF.Admin
         private void BtnUserManagement_Click(object sender, RoutedEventArgs e)
         {
             UpdateSidebarButtonStyle(sender);
-            new AccountWindow().Show();
+            new UserManagementWPF(_currentUser).Show();
             this.Close();
         }
 
@@ -255,6 +256,7 @@ namespace ManageClub_PRN212.WPF.Admin
             if (result == MessageBoxResult.Yes)
             {
                 new Login().Show();
+                SessionDataUser.users.Clear();
                 this.Close();
             }
         }
@@ -270,6 +272,22 @@ namespace ManageClub_PRN212.WPF.Admin
                 _selectedButton.Style = (Style)FindResource("SidebarButtonStyle");
             _selectedButton = (Button)sender;
             _selectedButton.Style = (Style)FindResource("SelectedSidebarButtonStyle");
+        }
+
+        private void BtnMyProfile_Click(object sender, RoutedEventArgs e)
+        {
+            new ProfileWindow().ShowDialog();
+        }
+
+        private void BtnAccountManagement_Click(object sender, RoutedEventArgs e)
+        {
+            new AccountWindow().Show();
+            this.Close();
+        }
+
+        private void BtnAttendance_Click(object sender, RoutedEventArgs e)
+        {
+            new AttendanceWPF(SessionDataUser.users[0]).ShowDialog();
         }
     }
 }

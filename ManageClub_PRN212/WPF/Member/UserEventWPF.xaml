@@ -7,7 +7,7 @@
     mc:Ignorable="d"
         Title="Club Events" Height="650" Width="1084"
         WindowStartupLocation="CenterScreen"
-        Background="#E8F5E9">
+        Background="#E8F5E9" WindowState="Maximized">
     <Window.Resources>
         <!-- Các tài nguyên giữ nguyên như trước -->
         <DropShadowEffect x:Key="ButtonShadow" ShadowDepth="2" BlurRadius="4" Color="#388E3C"/>
@@ -170,13 +170,20 @@
         <!-- Navbar -->
         <Border Grid.Row="0" Background="#212121" Padding="5" CornerRadius="5" Margin="0,0,0,10">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="BtnUpcomingEvents" Content="📄 Club Events" 
-                        Style="{StaticResource NavbarButtonStyle}" Click="BtnUpcomingEvents_Click"/>
-                <Button x:Name="BtnJoinClubs" Content="🏡 Join Clubs" 
-                        Style="{StaticResource NavbarButtonStyle}" Click="BtnJoinClubs_Click"/>
-                <!-- Thêm nút Join Clubs -->
-                <Button x:Name="BtnLogout" Content="🚪 Logout" 
-                        Style="{StaticResource NavbarButtonStyle}" Click="BtnLogout_Click"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button x:Name="BtnMyClubs" Content="📌 My Clubs" 
+            Style="{StaticResource NavbarButtonStyle}" Click="BtnMyClubs_Click"/>
+                    <Button x:Name="BtnJoinEvents" Content="📄 Join Events" 
+            Style="{StaticResource NavbarButtonStyle}" Click="BtnJoinEvent_Click"/>
+                    <Button x:Name="BtnJoinClubs" Content="🏡 Join Clubs" 
+            Style="{StaticResource NavbarButtonStyle}" Click="BtnJoinClubs_Click"/>
+                    <!-- Thêm nút Join Events -->
+                    <Button x:Name="BtnAttendance" Content="📅 Event Attendance" Style="{StaticResource NavbarButtonStyle}" Click="BtnAttendance_Click"/>
+                    <Button x:Name="BtnMyProfile" Content="👤 My Profile" 
+            Style="{StaticResource NavbarButtonStyle}" Click="BtnMyProfile_Click"/>
+                    <Button x:Name="BtnLogout" Content="🚪 Logout" 
+            Style="{StaticResource NavbarButtonStyle}" Click="BtnLogout_Click"/>
+                </StackPanel>
             </StackPanel>
         </Border>
 
@@ -218,7 +225,10 @@
                 <DataGridTemplateColumn Header="Action" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Style="{StaticResource ContentButtonStyle}" Tag="{Binding}" Click="BtnJoinEvent_Click"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Style="{StaticResource ContentButtonStyle}" Tag="{Binding}" Click="BtnJoinEvent_Click" Margin="0,0,5,0"/>
+                                <Button Content="Feedback" Style="{StaticResource ContentButtonStyle}" Background="#9C27B0" Tag="{Binding}" Click="BtnViewFeedback_Click"/>
+                            </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

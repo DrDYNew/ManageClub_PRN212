@@ -133,15 +133,20 @@
 
                 <!-- Menu Items with Icons (using Unicode) -->
                 <Button x:Name="BtnClubMemberManagement" Content="👤 Club Member Management" 
-            Style="{StaticResource SidebarButtonStyle}"/>
+        Style="{StaticResource SidebarButtonStyle}" Click="BtnClubMemberManagement_Click"/>
                 <Button x:Name="BtnEventManagement" Content="📅 Event Management" 
-            Style="{StaticResource SidebarButtonStyle}"/>
+        Style="{StaticResource SidebarButtonStyle}" Click="BtnEventManagement_Click"/>
                 <Button x:Name="BtnParticipants" Content="👥 Participants" 
-            Style="{StaticResource SidebarButtonStyle}"/>
+        Style="{StaticResource SidebarButtonStyle}" Click="BtnParticipants_Click"/>
                 <Button x:Name="BtnJoinListEvent" Content="👥 Join List Event" 
-            Style="{StaticResource SidebarButtonStyle}"/>
+        Style="{StaticResource SidebarButtonStyle}" Click="BtnJoinListEvent_Click"/>
+                <Button x:Name="BtnMemberJoinClub" Content="🤝 Member Join Club" 
+        Style="{StaticResource SidebarButtonStyle}" Click="BtnMemberJoinClub_Click"/>
+                <Button x:Name="BtnClubFinance" Content="💰 Club Finance" 
+        Style="{StaticResource SidebarButtonStyle}" Click="BtnClubFinance_Click"/>
+                <Button x:Name="BtnAttendance" Content="📅 Event Attendance" Style="{StaticResource SidebarButtonStyle}" Click="BtnAttendance_Click"/>
                 <Button x:Name="BtnLogout" Content="🚪 Logout" 
-            Style="{StaticResource SidebarButtonStyle}" Margin="0,20,0,0"/>
+        Style="{StaticResource SidebarButtonStyle}" Margin="0,20,0,0" Click="BtnLogout_Click"/>
             </StackPanel>
         </Border>
 
@@ -186,7 +191,7 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <Button Content="View/Edit" Style="{StaticResource AcceptButtonStyle}" 
-                                            Tag="{Binding ClubId}" Name="btnEditClub" Click="btnEditClub_Click"/>
+                                            Tag="{Binding User.UserId}" Name="btnEditClub" Click="btnEditClub_Click"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
