@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManageClub_PRN212.WPF"
         mc:Ignorable="d"
-        Title="Event Attendance Management" Height="650" Width="1000" WindowStartupLocation="CenterScreen">
+        Title="Event Attendance Management" Height="650" Width="1000" WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
     <Window.Resources>
         <Style x:Key="ButtonStyle" TargetType="Button">
             <Setter Property="Padding" Value="15,8"/>

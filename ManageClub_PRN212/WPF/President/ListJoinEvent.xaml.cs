@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using static ManageClub_PRN212.Models.User;
 
 namespace ManageClub_PRN212.WPF.President
 {
@@ -49,39 +50,6 @@ namespace ManageClub_PRN212.WPF.President
             _selectedButton.Style = (Style)FindResource("SelectedSidebarButtonStyle");
 
             LoadEventsAndParticipants();
-        }
-
-        private void BtnToggleSidebar_Click(object sender, RoutedEventArgs e)
-        {
-            ToggleSidebar();
-        }
-
-        private void ToggleSidebar()
-        {
-            var border = (Border)FindName("sidebarBorder");
-            if (border != null)
-            {
-                DoubleAnimation animation = new DoubleAnimation
-                {
-                    Duration = TimeSpan.FromSeconds(0.3)
-                };
-
-                if (!IsSidebarCollapsed)
-                {
-                    animation.From = 250;
-                    animation.To = 50;
-                    IsSidebarCollapsed = true;
-                }
-                else
-                {
-                    animation.From = 50;
-                    animation.To = 250;
-                    IsSidebarCollapsed = false;
-                }
-
-                border.BeginAnimation(Border.WidthProperty, animation);
-                SidebarWidth = animation.To.Value;
-            }
         }
 
         private void BtnEventManagement_Click(object sender, RoutedEventArgs e)
@@ -133,6 +101,7 @@ namespace ManageClub_PRN212.WPF.President
             var result = MessageBox.Show("Are you sure you want to logout?", "Logout", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
+                SessionDataUser.users.Clear();
                 new Login().Show();
                 this.Close();
             }
@@ -379,6 +348,17 @@ namespace ManageClub_PRN212.WPF.President
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void BtnClubMemberManagement_Click(object sender, RoutedEventArgs e)
+        {
+            new ClubMemberManagement(_currentUser).Show();
+            this.Close();
+        }
+
+        private void BtnAttendance_Click(object sender, RoutedEventArgs e)
+        {
+            new AttendanceWPF(SessionDataUser.users[0]).ShowDialog();
         }
     }
 

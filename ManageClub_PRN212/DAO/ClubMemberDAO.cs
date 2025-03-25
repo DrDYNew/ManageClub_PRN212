@@ -12,15 +12,15 @@ namespace ManageClub_PRN212.DAO
     {
         private readonly ManageClubContext _context;
 
-        public ClubMemberDAO(ManageClubContext context)
+        public ClubMemberDAO()
         {
-            _context = context;
+            _context = new ManageClubContext();
         }
 
         public static List<ClubMember> GetClubMembersByClubId(int id)
         {
             ManageClubContext context = new ManageClubContext();
-            return context.ClubMembers.Include(cl => cl.User).Where(cl => cl.ClubId == id).ToList();
+            return context.ClubMembers.Include(cl => cl.Club).Include(cl => cl.User).Where(cl => cl.ClubId == id && cl.MemberStatus != "Left").ToList();
         }
 
         public static void AddClubMember(ClubMember clubMember)
@@ -32,8 +32,10 @@ namespace ManageClub_PRN212.DAO
 
         public static ClubMember GetClubMemberByClubIdAndMemberId(int clubId, int memberId)
         {
-            ManageClubContext context = new ManageClubContext();
-            return context.ClubMembers.Where(cl => cl.ClubId == clubId && cl.MembershipId == memberId).FirstOrDefault();
+            using (ManageClubContext context = new ManageClubContext())
+            {
+                return context.ClubMembers.FirstOrDefault(cl => cl.ClubId == clubId && cl.UserId == memberId);
+            }
         }
 
         public static void UpdateClubMember(ClubMember clubMember)

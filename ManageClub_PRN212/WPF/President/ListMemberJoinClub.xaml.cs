@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using ManageClub_PRN212.ViewModels;
+using static ManageClub_PRN212.Models.User;
 
 namespace ManageClub_PRN212.WPF.President
 {
@@ -42,6 +43,8 @@ namespace ManageClub_PRN212.WPF.President
 
         public ListMemberJoinClub(User currentUser)
         {
+            _clubDAO = new ClubDAO();
+            _memberDAO = new ClubMemberDAO();
             try
             {
                 InitializeComponent();
@@ -66,7 +69,7 @@ namespace ManageClub_PRN212.WPF.President
             SidebarWidth = 250;
             IsSidebarCollapsed = false;
 
-            _selectedButton = BtnMembers;
+            _selectedButton = BtnMemberJoinClub;
             _selectedButton.Style = (Style)FindResource("SelectedSidebarButtonStyle");
 
             LoadClubsAndMembers();
@@ -184,6 +187,7 @@ namespace ManageClub_PRN212.WPF.President
             var result = MessageBox.Show("Are you sure you want to logout?", "Logout", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
+                SessionDataUser.users.Clear();
                 UnregisterEventHandlers(); // Unregister handlers before closing
                 new Login().Show();
                 Close();
@@ -463,6 +467,22 @@ namespace ManageClub_PRN212.WPF.President
         {
             UnregisterEventHandlers(); // Unregister handlers before closing
             Close();
+        }
+
+        private void BtnClubMemberManagement_Click(object sender, RoutedEventArgs e)
+        {
+            new ClubMemberManagement(_currentUser).Show();
+            this.Close();
+        }
+
+        private void BtnListMemberJoinClub_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnAttendance_Click(object sender, RoutedEventArgs e)
+        {
+            new AttendanceWPF(SessionDataUser.users[0]).ShowDialog();
         }
     }
 }

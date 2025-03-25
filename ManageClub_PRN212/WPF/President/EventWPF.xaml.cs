@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using ManageClub_PRN212.DAO;
 using ManageClub_PRN212.Models;
+using static ManageClub_PRN212.Models.User;
 
 namespace ManageClub_PRN212.WPF.President
 {
@@ -61,39 +62,6 @@ namespace ManageClub_PRN212.WPF.President
             _selectedButton.Style = (Style)FindResource("SelectedSidebarButtonStyle");
             SidebarWidth = 250;
             IsSidebarCollapsed = false;
-        }
-
-        private void BtnToggleSidebar_Click(object sender, RoutedEventArgs e)
-        {
-            ToggleSidebar();
-        }
-
-        private void ToggleSidebar()
-        {
-            var border = (Border)FindName("sidebarBorder");
-            if (border != null)
-            {
-                DoubleAnimation animation = new DoubleAnimation
-                {
-                    Duration = TimeSpan.FromSeconds(0.3)
-                };
-
-                if (!IsSidebarCollapsed)
-                {
-                    animation.From = 250;
-                    animation.To = 50;
-                    IsSidebarCollapsed = true;
-                }
-                else
-                {
-                    animation.From = 50;
-                    animation.To = 250;
-                    IsSidebarCollapsed = false;
-                }
-
-                border.BeginAnimation(Border.WidthProperty, animation);
-                SidebarWidth = animation.To.Value;
-            }
         }
 
         private void BtnEventManagement_Click(object sender, RoutedEventArgs e)
@@ -154,6 +122,7 @@ namespace ManageClub_PRN212.WPF.President
             var result = MessageBox.Show("Are you sure you want to logout?", "Logout", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
+                SessionDataUser.users.Clear();
                 Login loginWindow = new Login();
                 loginWindow.Show();
                 this.Close();
@@ -427,6 +396,42 @@ namespace ManageClub_PRN212.WPF.President
             cmbOrganizer.SelectedItem = _currentUser;
             cmbClubs.SelectedIndex = -1;
             txtMaxParticipants.Text = "";
+        }
+
+        private void BtnViewFeedback_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (selectedEvent != null)
+                {
+                    EventFeedbackWPF feedbackWPF = new EventFeedbackWPF(_currentUser, selectedEvent);
+                    feedbackWPF.Closed += (sender, e) =>
+                    {
+                        LoadEvents();
+                    };
+                    feedbackWPF.ShowDialog();
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Please select an event to view feedback.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening feedback: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void BtnClubMemberManagement_Click(object sender, RoutedEventArgs e)
+        {
+            new ClubMemberManagement(_currentUser).Show();
+            this.Close();
+        }
+
+        private void BtnAttendance_Click(object sender, RoutedEventArgs e)
+        {
+            new AttendanceWPF(SessionDataUser.users[0]).ShowDialog();
         }
     }
 }

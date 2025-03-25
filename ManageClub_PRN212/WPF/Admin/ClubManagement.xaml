@@ -134,12 +134,14 @@
                Foreground="White" Margin="0,20,0,20" HorizontalAlignment="Center"/>
 
                 <!-- Menu Items with Icons (using Unicode) -->
-                <Button x:Name="BtnAccountManagement" Content="🔑 Account Management" Style="{StaticResource SidebarButtonStyle}"
-                        Click="BtnAccountManagement_Click"/>
+                <Button x:Name="BtnAccountManagement" Content="🔑 Account Management" Style="{StaticResource SidebarButtonStyle}" Click="BtnAccountManagement_Click"/>
                 <Button x:Name="BtnClubManagement" Content="🏠 Club Management" Style="{StaticResource SidebarButtonStyle}"/>
+                <Button x:Name="BtnReport" Content="📊 Report" Style="{StaticResource SidebarButtonStyle}" Click="BtnReport_Click"/>
+                <Button x:Name="BtnUserManagement" Content="👤 User Management" Style="{StaticResource SidebarButtonStyle}" Click="BtnUserManagement_Click"/>
+                <Button x:Name="BtnAttendance" Content="📅 Event Attendance" Style="{StaticResource SidebarButtonStyle}" Click="BtnAttendance_Click"/>
                 <Button x:Name="BtnMyProfile" Content="👤 My Profile" Style="{StaticResource SidebarButtonStyle}" Click="BtnMyProfile_Click"/>
-                <Button x:Name="BtnLogout" Content="🚪 Logout" Style="{StaticResource SidebarButtonStyle}" 
-                        Margin="0,20,0,0" Click="BtnLogout_Click"/>
+
+                <Button x:Name="BtnLogout" Content="🚪 Logout" Style="{StaticResource SidebarButtonStyle}" Margin="0,20,0,0" Click="BtnLogout_Click"/>
             </StackPanel>
 
         </Border>

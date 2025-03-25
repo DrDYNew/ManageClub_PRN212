@@ -262,19 +262,7 @@ namespace ManageClub_PRN212.WPF
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            // Return to previous screen based on user role
-            if (_currentUser.RoleId == 1 || _currentUser.RoleId == 2) // Admin or Club President
-            {
-                EventWPF eventWPF = new EventWPF(_currentUser);
-                eventWPF.Show();
-                this.Close();
-            }
-            else // Member
-            {
-                UserEventWPF userEventWPF = new UserEventWPF(_currentUser);
-                userEventWPF.Show();
-                this.Close();
-            }
+            this.Close();
         }
     }
 } 

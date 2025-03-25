@@ -91,7 +91,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Submit" HorizontalAlignment="Left" Margin="0 0 50 0"
+            <Button Content="Update" HorizontalAlignment="Left" Margin="0 0 50 0"
                 Width="80" Height="30" Background="#2E7D32" 
                 BorderBrush="#2E7D32" Foreground="White" Name="btnSubmit" Click="btnSubmit_Click"/>
             <Button Content="Back" HorizontalAlignment="Right" Width="80" 

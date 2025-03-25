@@ -8,6 +8,7 @@ using ManageClub_PRN212.Models;
 using System.Net.Mail;
 using System.Net;
 using System.Windows.Media;
+using static ManageClub_PRN212.Models.User;
 
 namespace ManageClub_PRN212.WPF.Member
 {
@@ -31,7 +32,7 @@ namespace ManageClub_PRN212.WPF.Member
             dpStartDateFilter.SelectedDateChanged += DpStartDateFilter_SelectedDateChanged;
             dpEndDateFilter.SelectedDateChanged += DpEndDateFilter_SelectedDateChanged;
 
-            _selectedButton = BtnUpcomingEvents;
+            _selectedButton = BtnJoinEvents;
             _selectedButton.Style = (Style)FindResource("SelectedNavbarButtonStyle");
         }
 
@@ -258,9 +259,43 @@ namespace ManageClub_PRN212.WPF.Member
             var result = MessageBox.Show("Are you sure you want to logout?", "Logout", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
+                SessionDataUser.users.Clear();
                 Login loginWindow = new Login();
                 loginWindow.Show();
                 this.Close();
+            }
+        }
+
+        private void BtnMyProfile_Click(object sender, RoutedEventArgs e)
+        {
+            new ProfileWindow().ShowDialog();
+        }
+
+        private void BtnMyClubs_Click(object sender, RoutedEventArgs e)
+        {
+            new MyClub(_currentUser).Show();
+            this.Close();
+        }
+
+        private void BtnAttendance_Click(object sender, RoutedEventArgs e)
+        {
+            new AttendanceWPF(SessionDataUser.users[0]).ShowDialog();
+        }
+
+        private void BtnViewFeedback_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is Button button && button.Tag is Event selectedEvent)
+                {
+                    EventFeedbackWPF feedbackWPF = new EventFeedbackWPF(_currentUser, selectedEvent);
+                    feedbackWPF.Show();
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening feedback: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

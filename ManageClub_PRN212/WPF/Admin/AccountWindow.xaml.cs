@@ -1,19 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using ManageClub_PRN212.DAO;
 using ManageClub_PRN212.Models;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using static ManageClub_PRN212.Models.User;
 
@@ -52,10 +40,15 @@ namespace ManageClub_PRN212.WPF.Admin
 
         private void BtnLogout_Click(object sender, RoutedEventArgs e)
         {
-            SessionDataUser.users.Clear();
-            Login loginWindown = new Login();
-            loginWindown.Show();
-            this.Close();
+            
+            var result = MessageBox.Show("Are you sure you want to logout?", "Logout", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                SessionDataUser.users.Clear();
+                Login loginWindown = new Login();
+                loginWindown.Show();
+                this.Close();
+            }
         }
 
         private void dgAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -123,6 +116,24 @@ namespace ManageClub_PRN212.WPF.Admin
         {
             ProfileWindow profileWindow = new ProfileWindow();
             profileWindow.ShowDialog();
+        }
+
+        private void BtnReport_Click(object sender, RoutedEventArgs e)
+        {
+            ReportWPF report = new ReportWPF();
+            report.Show();
+            this.Close();
+        }
+
+        private void BtnUserManagement_Click(object sender, RoutedEventArgs e)
+        {
+                new UserManagementWPF(SessionDataUser.users[0]).Show();
+                this.Close();
+        }
+
+        private void BtnAttendance_Click(object sender, RoutedEventArgs e)
+        {
+            new AttendanceWPF(SessionDataUser.users[0]).ShowDialog();
         }
     }
 }

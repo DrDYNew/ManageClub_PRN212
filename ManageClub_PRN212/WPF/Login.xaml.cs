@@ -74,8 +74,8 @@ namespace ManageClub_PRN212.WPF
                         this.Close();
                         break;
                     case 2:
-                        EventWPF eventWPF = new EventWPF(user);
-                        eventWPF.Show();
+                        ClubMemberManagement clubMemberManagement = new ClubMemberManagement(user);
+                        clubMemberManagement.Show();
                         this.Close();
                         break;
                     case 3:
